@@ -23,6 +23,8 @@ setup(
         'console_scripts': [
             'talker = my_first_pkg.talker:main',
             'listener = my_first_pkg.listener:main',
+            'wheel_cmd_pub = my_first_pkg.wheel_cmd_pub:main',
+            'wheel_cmd_copy = my_first_pkg.wheel_cmd_copy:main'
         ],
     },
 )
