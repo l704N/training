@@ -51,8 +51,7 @@ def small_yaw_to_base(point_small, big_yaw, small_yaw, small_offset, big_offset)
     return p_B
     # 进阶：调用两次 rotate2d，分别得到 L、B 中的水平分量。
     # 每次旋转后加该段偏移，Z 只累加对应的高度偏移。
-    raise NotImplementedError("请完成小 yaw 到大 yaw、底盘的连续变换")
-
+    
 
 print(optical_to_link((1, 2, 3)))
 yaw, elevation = aim_angles((0, 1, 1))
