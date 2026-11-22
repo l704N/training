@@ -1,5 +1,5 @@
 """基础作业完成前两个函数，进阶作业完成第三个函数。距离 m，角度 rad。"""
-from math import isfinite, hypot, atan2, degrees
+from math import isfinite, hypot, atan2, degrees, cos, sin, pi
 from robotics_demo import rotate2d
 
 
@@ -24,6 +24,10 @@ def aim_angles(point_reference):
     # 基础 2：使用 isfinite、hypot 和 atan2，实现上述约定。
     
 
+def Rz(yaw,offset):
+    nx = cos(yaw)*offset[0]-sin(yaw)*offset[1]
+    ny = sin(yaw)*offset[0]+cos(yaw)*offset[1]
+    return (nx,ny,offset[2])
 
 def small_yaw_to_base(point_small, big_yaw, small_yaw, small_offset, big_offset):
     """将小 yaw 中的三维点换到底盘中，返回 (x, y, z)。
@@ -34,6 +38,17 @@ def small_yaw_to_base(point_small, big_yaw, small_yaw, small_offset, big_offset)
     p_L = Rz(small_yaw) p_S + small_offset
     p_B = Rz(big_yaw) p_L + big_offset
     """
+    r = Rz(small_yaw, point_small)
+    p_L = (r[0] + small_offset[0],
+           r[1] + small_offset[1],
+           r[2] + small_offset[2])          
+
+    r2 = Rz(big_yaw, p_L)
+    p_B = (r2[0] + big_offset[0],
+           r2[1] + big_offset[1],
+           r2[2] + big_offset[2])
+
+    return p_B
     # 进阶：调用两次 rotate2d，分别得到 L、B 中的水平分量。
     # 每次旋转后加该段偏移，Z 只累加对应的高度偏移。
     raise NotImplementedError("请完成小 yaw 到大 yaw、底盘的连续变换")
@@ -42,3 +57,8 @@ def small_yaw_to_base(point_small, big_yaw, small_yaw, small_offset, big_offset)
 print(optical_to_link((1, 2, 3)))
 yaw, elevation = aim_angles((0, 1, 1))
 print(degrees(yaw), degrees(elevation))
+point_base = small_yaw_to_base(
+    (2, 0, 0.5), pi / 2, -pi / 2,
+    (0.3, 0.2, 0), (0, 0, 0.2)
+)
+print(tuple(round(value, 6) for value in point_base))
